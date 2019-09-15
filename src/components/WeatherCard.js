@@ -1,9 +1,9 @@
 import React from 'react';
+import images from '../images/images';
 
 class WeatherCard extends React.Component {
 
     getDayName = dayNumber => { 
-        console.log(dayNumber)
         switch(dayNumber) {
             case 1: 
                 return 'Monday';
@@ -24,16 +24,28 @@ class WeatherCard extends React.Component {
         }
     }
 
+    getImageURL = imageName => {
+        switch(imageName) {
+            case 'Rain':
+                return images.rain;
+            case 'Clouds':
+                return images.clouds;
+        }
+    }
+
     render() {
         return (
         <div className="card">
-
+            <div className="image">
+                <img src={this.getImageURL(this.props.weather.weather[0].main)}/>
+            </div>
             <div className="content">
                 <div className="header">{this.getDayName(this.props.date.getDay())} {this.props.date.getMonth() + 1}/{this.props.date.getDate()}</div>
+                <div className="description">{this.props.weather.main.temp}</div>
             </div>
         </div>
         );
     }
 }
-
+//<img src={this.getImageURL(this.props.weather.weather[0].main)}/>
 export default WeatherCard;
