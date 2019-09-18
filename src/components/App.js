@@ -7,7 +7,11 @@ import WeatherCard from './WeatherCard';
 class App extends React.Component {
     render() {
         return ( 
-        <div>
+        <div className="ui container">
+            <h2 className="ui center aligned icon header">
+                <i className="circular umbrella icon"></i>
+                BiWeather
+            </h2>
             <Router history={history}>
                 <Switch>
                     <Route exact path='/' component={WeatherList}/>

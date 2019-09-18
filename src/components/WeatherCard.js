@@ -30,18 +30,22 @@ class WeatherCard extends React.Component {
                 return images.rain;
             case 'Clouds':
                 return images.clouds;
+            case 'Clear':
+                return images.clear;
+            default:
+                return 'Picture not existant'
         }
     }
 
     render() {
         return (
-        <div className="card">
+        <div className="ui link fluid card">
             <div className="image">
                 <img src={this.getImageURL(this.props.weather.weather[0].main)}/>
             </div>
             <div className="content">
-                <div className="header">{this.getDayName(this.props.date.getDay())} {this.props.date.getMonth() + 1}/{this.props.date.getDate()}</div>
-                <div className="description">{this.props.weather.main.temp}</div>
+                <h4>{this.getDayName(this.props.date.getDay())} {this.props.date.getMonth() + 1}/{this.props.date.getDate()}</h4>
+                <div className="description">{Math.round(this.props.weather.main.temp)} °C </div>
             </div>
         </div>
         );

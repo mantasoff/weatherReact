@@ -1,5 +1,6 @@
 import React from 'react';
 import API_KEY from '../keys/apiKey';
+import Loader from './Loader';
 import weatherAPI from '../apis/weatherApi';
 import WeatherCard from './WeatherCard';
 
@@ -8,36 +9,29 @@ class WeatherList extends React.Component {
     state = {
         lat: 0,
         long: 0,
-        weatherArray: []
+        weatherArray: [],
+        city: ''
     }
 
     getTopFiveResults = weatherArray => {
         let lastWeatherDate;
         let topFiveArray = [];
         let largestTemperatureWeather = weatherArray[0];
-
-
         weatherArray.map(weather => { 
             let weatherDate = new Date(weather.dt * 1000);
             if(!lastWeatherDate) lastWeatherDate = weatherDate;
-            console.log(weather);
-            console.log(weatherDate.getUTCDate());
             if(weatherDate.getUTCDate() === lastWeatherDate.getUTCDate()) { 
-                console.log('Toks pat');
                 if(largestTemperatureWeather.main.temp < weather.main.temp) {
                     largestTemperatureWeather = weather;
                 };
             } else {
-                console.log('Deda i array')
                 topFiveArray.push(largestTemperatureWeather);
                 largestTemperatureWeather = weather;
             };
 
             lastWeatherDate = weatherDate;
+            return;
         });
-        
-
-        console.log(topFiveArray)
 
         return topFiveArray;
     }
@@ -50,8 +44,10 @@ class WeatherList extends React.Component {
         let response = await weatherAPI.get(`forecast?lat=${this.state.lat}&lon=${this.state.long}&APPID=${API_KEY}&units=metric`);
         let topFiveResults = this.getTopFiveResults(response.data.list);
         this.setState({
-            weatherArray: topFiveResults
-        },() => console.log(this.state))
+            weatherArray: topFiveResults,
+            city: response.data.city.name
+        })
+        console.log(topFiveResults);
     }
 
     getUserLocation = () => {
@@ -84,24 +80,39 @@ class WeatherList extends React.Component {
     }
 
     renderCards = () => {
-        if(this.state.weatherArray.length === 0) {
-            return <div>Loading!</div>
-        }
-        
         let dateArray = this.getDateArray();
         return dateArray.map((date, index) => {
-            return <WeatherCard weather={this.state.weatherArray[index]} key={date} date={date} />
+            return (
+            <div className="column" key={this.state.weatherArray[index].dt}>
+                <WeatherCard weather={this.state.weatherArray[index]} key={date} date={date} />
+            </div>
+            
+            );
         })
 
         
     }
 
+    renderHeader = () => {
+        return(
+            <h3 className="ui center aligned header"> 
+                Welcome to {this.state.city}!
+            </h3>
+        );
+    }
+
     render() {
+        if(this.state.weatherArray.length === 0) {
+            return <Loader />
+        }
+        
         return (
-        <div className="ui container">
-            <div className="ui link cards">
+        <div className="ui segment">
+            {this.renderHeader()}
+            <div className="ui five column grid">
                 {this.renderCards()}
             </div>
+
         </div>
         );
     }
