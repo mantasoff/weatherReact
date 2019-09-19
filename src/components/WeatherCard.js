@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../history';
 import images from '../images/images';
 
 class WeatherCard extends React.Component {
@@ -39,7 +40,7 @@ class WeatherCard extends React.Component {
 
     render() {
         return (
-        <div className="ui link fluid card">
+        <div onClick={() => history.push(`/weather/${this.props.weather.dt}`)} className="ui link fluid card">
             <div className="image">
                 <img src={this.getImageURL(this.props.weather.weather[0].main)}/>
             </div>

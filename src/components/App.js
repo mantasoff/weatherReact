@@ -80,14 +80,14 @@ class App extends React.Component {
     render() {
         return ( 
         <div className="ui container">
-            <h2 className="ui center aligned icon header">
+            <h2 onClick={() => history.push('/')} className="ui center aligned icon header">
                 <i className="circular umbrella icon"></i>
                 BiWeather
             </h2>
             <Router history={history}>
                 <Switch>
                     <Route exact path='/' render={ props => <WeatherList {...props} weatherArray={this.state.weatherArray} city={this.state.city} />}/>
-                    <Route exact path='/weather/:dt' render={props => <WeatherForm {...props} fullWeatherArray={this.state.fullWeatherArray} />}/>
+                    <Route exact path='/weather/:dt' render={props => <WeatherForm {...props} city={this.state.city} fullWeatherArray={this.state.fullWeatherArray} />}/>
                 </Switch>
             </Router>
         </div>
