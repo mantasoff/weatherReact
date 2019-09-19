@@ -79,17 +79,19 @@ class WeatherFrom extends React.Component {
     }
 
     getAverageWeather = weatherArray => {
-        let precipationArray = [weatherArray[0].weather[0].main];
+        let precipationArray = [];
         let precipationCount = []
 
         weatherArray.forEach((weather,index) => {
             if(precipationArray.includes(weather.weather[0].main)) {
-                precipationCount[precipationArray.indexOf(weather.weather[0].main)]++;
+                precipationCount[precipationArray.indexOf(weather.weather[0].main)] = precipationCount[precipationArray.indexOf(weather.weather[0].main)] + 1;
             } else {
                 precipationArray.push(weather.weather[0].main);
                 precipationCount.push(1);
             }
         })
+
+        console.log(precipationCount);
 
         let precipationAverage = '';
         let precipationAverageCount = -1;
