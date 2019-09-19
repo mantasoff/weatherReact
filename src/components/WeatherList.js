@@ -1,7 +1,5 @@
 import React from 'react';
-import API_KEY from '../keys/apiKey';
 import Loader from './Loader';
-import weatherAPI from '../apis/weatherApi';
 import WeatherCard from './WeatherCard';
 
 class WeatherList extends React.Component {
@@ -24,11 +22,8 @@ class WeatherList extends React.Component {
             <div className="column" key={this.props.weatherArray[index].dt}>
                 <WeatherCard weather={this.props.weatherArray[index]} key={date} date={date} />
             </div>
-            
             );
-        })
-
-        
+        })      
     }
 
     renderHeader = () => {
