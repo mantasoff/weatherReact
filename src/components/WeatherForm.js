@@ -1,7 +1,7 @@
 import React from 'react';
 import history from '../history'
-import API_KEY from '../keys/apiKey';
-import weatherAPI from '../apis/weatherApi';
+import {getImageURL} from '../images/images';
+import HourWeatherCard from './HourWeatherCard';
 
 class WeatherFrom extends React.Component {
 
@@ -25,16 +25,13 @@ class WeatherFrom extends React.Component {
         let minTemp = this.getMinTemperature(weatherArray);
         let weather = this.getAverageWeather(weatherArray);
         
-
-
-        //Delete console log after development
         this.setState({
             weatherArray,
             selectedWeather,
             maxTemp,
             minTemp,
             weather
-        }, () => console.log(this.state))
+        })
     }
     
     filterArrayByDay = (currentDT, weatherArray) => {
@@ -53,7 +50,7 @@ class WeatherFrom extends React.Component {
 
     getDateFromArray = selectedDT => {
         let selectedDTArray =  this.props.fullWeatherArray.filter(weather => {
-            if(selectedDT == weather.dt) return true;
+            if(selectedDT === weather.dt.toString()) return true;
             return false;
         });
 
@@ -91,8 +88,6 @@ class WeatherFrom extends React.Component {
             }
         })
 
-        console.log(precipationCount);
-
         let precipationAverage = '';
         let precipationAverageCount = -1;
 
@@ -110,6 +105,15 @@ class WeatherFrom extends React.Component {
         let dateForFormatting = new Date(unformatedDt * 1000);
         
         return `${dateForFormatting.getFullYear()}/${dateForFormatting.getMonth() + 1}/${dateForFormatting.getUTCDate()}`;
+    }
+
+    renderHourCards = () => {
+        return(
+            this.state.weatherArray.map(weather => {
+                let weatherDate = new Date(weather.dt * 1000);
+                return <HourWeatherCard key={weather.dt} weatherURL={weather.weather[0].main} time={weatherDate.getHours()} temperature={weather.main.temp} />
+            })
+        );
     }
 
     render() {
@@ -145,20 +149,27 @@ class WeatherFrom extends React.Component {
                     </div>
                     <div className="statistic">
                         <div className="value">
-                            {Math.round(this.state.minTemp)}
-                        </div>
-                        <div className="label">
-                            Lowest Temperature
-                        </div>
-                    </div>
-                    <div className="statistic">
-                        <div className="value">
+                            <img alt={this.state.weather} src={getImageURL(this.state.weather)}/>
                             {this.state.weather}
                         </div>
                         <div className="label">
                             Probable Weather
                         </div>
                     </div>
+                    <div className="statistic">
+                        <div className="value">
+                            {Math.round(this.state.minTemp)}
+                        </div>
+                        <div className="label">
+                            Lowest Temperature
+                        </div>
+                    </div>
+                </div>
+                <div className="ui center aligned header">
+                    Weather Forecast
+                </div>
+                <div className="ui eight cards">
+                    {this.renderHourCards()}
                 </div>
             </div>
         );

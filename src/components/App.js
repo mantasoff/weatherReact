@@ -27,7 +27,7 @@ class App extends React.Component {
         let lastWeatherDate;
         let topFiveArray = [];
         let largestTemperatureWeather = weatherArray[0];
-        weatherArray.map(weather => { 
+        weatherArray.forEach(weather => { 
             let weatherDate = new Date(weather.dt * 1000);
             if(!lastWeatherDate) lastWeatherDate = weatherDate;
             if(weatherDate.getUTCDate() === lastWeatherDate.getUTCDate()) { 

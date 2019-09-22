@@ -1,6 +1,6 @@
 import React from 'react';
 import history from '../history';
-import images from '../images/images';
+import {getImageURL} from '../images/images';
 
 class WeatherCard extends React.Component {
 
@@ -25,24 +25,11 @@ class WeatherCard extends React.Component {
         }
     }
 
-    getImageURL = imageName => {
-        switch(imageName) {
-            case 'Rain':
-                return images.rain;
-            case 'Clouds':
-                return images.clouds;
-            case 'Clear':
-                return images.clear;
-            default:
-                return 'Picture not existant'
-        }
-    }
-
     render() {
         return (
         <div onClick={() => history.push(`/weather/${this.props.weather.dt}`)} className="ui link fluid card">
             <div className="image">
-                <img src={this.getImageURL(this.props.weather.weather[0].main)}/>
+                <img alt={this.props.weather.weather[0].main} src={getImageURL(this.props.weather.weather[0].main)}/>
             </div>
             <div className="content">
                 <h4>{this.getDayName(this.props.date.getDay())} {this.props.date.getMonth() + 1}/{this.props.date.getDate()}</h4>

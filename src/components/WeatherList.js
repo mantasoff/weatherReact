@@ -45,7 +45,6 @@ class WeatherList extends React.Component {
             <div className="ui five column grid">
                 {this.renderCards()}
             </div>
-
         </div>
         );
     }
